@@ -47,7 +47,7 @@ public class SideBar extends JPanel implements MouseListener {
             
             // navigation buttons decoration
             if (i == 0) {
-                navBtns[i].setForeground(MyFonts.getTertiaryColor());
+                navBtns[i].setForeground(MyFonts.getQuaternaryColor());
             } else {
                 navBtns[i].setForeground(MyFonts.getPrimaryColor());
             }
@@ -65,14 +65,14 @@ public class SideBar extends JPanel implements MouseListener {
             if (i == 0) {
                 navPanels[i].setLayout(new FlowLayout(FlowLayout.CENTER, 0, 20));
                 navPanels[i].add(searchBox);
-                navPanels[i].setBackground(MyFonts.getSecondaryColor());
+                navPanels[i].setBackground(MyFonts.getTertiaryColor());
             } else {
                 navPanels[i].setLayout(new BorderLayout());
                 navPanels[i].add(navBtns[i - 1]);
                 if (i == 1) {
                     navPanels[i].setBackground(MyFonts.getPrimaryColor());
                 } else {
-                    navPanels[i].setBackground(MyFonts.getSecondaryColor());
+                    navPanels[i].setBackground(MyFonts.getTertiaryColor());
                 }
             }
         }
@@ -90,32 +90,37 @@ public class SideBar extends JPanel implements MouseListener {
     @Override
     public void mouseEntered(MouseEvent e) {
         if (e.getSource() == navBtns[0] && navBtnsEnabled[0] == false) {
-            navPanels[1].setBackground(new Color(0xA7CFD9));
+            navPanels[1].setBackground(MyFonts.getPrimaryHoverColor());
         } else if (e.getSource() == navBtns[1] && navBtnsEnabled[1] == false) {
-            navPanels[2].setBackground(new Color(0xA7CFD9));
+            navPanels[2].setBackground(MyFonts.getPrimaryHoverColor());
         } else if (e.getSource() == navBtns[2] && navBtnsEnabled[2] == false) {
-            navPanels[3].setBackground(new Color(0xA7CFD9));
+            navPanels[3].setBackground(MyFonts.getPrimaryHoverColor());
         }
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
         if (e.getSource() == navBtns[0] && navBtnsEnabled[0] == false) {
-            navPanels[1].setBackground(MyFonts.getSecondaryColor());
+            navPanels[1].setBackground(MyFonts.getTertiaryColor());
         } else if (e.getSource() == navBtns[1] && navBtnsEnabled[1] == false) {
-            navPanels[2].setBackground(MyFonts.getSecondaryColor());
+            navPanels[2].setBackground(MyFonts.getTertiaryColor());
         } else if (e.getSource() == navBtns[2] && navBtnsEnabled[2] == false) {
-            navPanels[3].setBackground(MyFonts.getSecondaryColor());
+            navPanels[3].setBackground(MyFonts.getTertiaryColor());
         }
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
         for (int i = 0; i < 3; i++) {
             if (e.getSource() == navBtns[i] && navBtnsEnabled[i] == false) {
                 navBtnsEnabled[i] = true;
                 navPanels[i + 1].setBackground(MyFonts.getPrimaryColor());
-                navBtns[i].setForeground(MyFonts.getTertiaryColor());
+                navBtns[i].setForeground(MyFonts.getQuaternaryColor());
                 if (i == 0) {
                     navBtns[i].setIcon(new ImageIcon("src/hotel/booking/system/Images/home-white.png"));
                 } else if (i == 1) {
@@ -123,11 +128,11 @@ public class SideBar extends JPanel implements MouseListener {
                 } else if (i == 2) {
                     navBtns[i].setIcon(new ImageIcon("src/hotel/booking/system/Images/dollar-white.png"));
                 }
-                HotelBookingSystem.setNav(i);
+                HotelBookingSystem.setNav(i, 0);
             }
             if (e.getSource() != navBtns[i]) {
                 navBtnsEnabled[i] = false;
-                navPanels[i + 1].setBackground(MyFonts.getSecondaryColor());
+                navPanels[i + 1].setBackground(MyFonts.getTertiaryColor());
                 navBtns[i].setForeground(MyFonts.getPrimaryColor());
                 if (i == 0) {
                     navBtns[i].setIcon(new ImageIcon("src/hotel/booking/system/Images/home.png"));
@@ -139,9 +144,6 @@ public class SideBar extends JPanel implements MouseListener {
             }
         }
     }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {}
 
     @Override
     public void mousePressed(MouseEvent e) {}

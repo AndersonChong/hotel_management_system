@@ -1,0 +1,8 @@
+1, Thu Jan 14 16:08:03 MYT 2021, Fri Jan 15 16:08:03 MYT 2021, A101, anderson, 010731101235, 0176655385, anderson@gmail.com
+2, Thu Jan 14 16:08:03 MYT 2021, Fri Jan 15 16:08:03 MYT 2021, A202, accee, 010731101235, 0176655385, accee@gmail.com
+3, Thu Jan 14 16:08:03 MYT 2021, Fri Jan 15 16:08:03 MYT 2021, A203, ait store, 010731101235, 0176655385, support@ait-store.com
+4, Thu Jan 14 23:00:07 MYT 2021, Fri Jan 15 23:00:07 MYT 2021, A209, asdf, asdf, asdf, asdf
+5, Thu Jan 14 23:16:48 MYT 2021, Fri Jan 15 23:16:48 MYT 2021, A204, asdf, asdf, asdf, asdf
+6, Thu Jan 14 23:16:48 MYT 2021, Fri Jan 15 23:16:48 MYT 2021, A205, qwer, qwer, qwer, qwer
+7, Thu Jan 14 23:18:33 MYT 2021, Fri Jan 15 23:18:33 MYT 2021, 0, qwer, qwer, qwer, qwer
+8, Sun Jan 17 00:00:00 MYT 2021, Tue Jan 19 00:00:00 MYT 2021, A104, aaaa, aaaa, aaaa, aaaa

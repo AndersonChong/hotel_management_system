@@ -4,8 +4,13 @@ import java.awt.*;
 public class MyFonts {
     // custom colors
     static Color primaryColor = new Color(0x07575B);
-    static Color secondaryColor = new Color(0xC4DFE6);
-    static Color tertiaryColor = new Color(0xFFFFFF);
+    static Color secondaryColor = new Color(0x66A5AD);
+    static Color tertiaryColor = new Color(0xC4DFE6);
+    static Color quaternaryColor = new Color(0xFFFFFF);
+    
+    // custom colors
+    static Color primaryHoverColor = new Color(0xA7CFD9);
+    static Color secondaryHoverColor = new Color(0x166E72);
     
     // custom fonts
     static Font primaryFont = new Font("Roboto", Font.PLAIN, 12);
@@ -24,6 +29,18 @@ public class MyFonts {
     
     public static Color getTertiaryColor() {
         return tertiaryColor;
+    }
+    
+    public static Color getQuaternaryColor() {
+        return quaternaryColor;
+    }
+    
+    public static Color getPrimaryHoverColor() {
+        return primaryHoverColor;
+    }
+    
+    public static Color getSecondaryHoverColor() {
+        return secondaryHoverColor;
     }
     
     public static Font getPrimaryFont() {

@@ -13,14 +13,14 @@ public class TopBar extends JPanel {
         // create label for username
         JLabel username = new JLabel("ANDERSON");
         username.setFont(MyFonts.getSecondaryFont());
-        username.setForeground(MyFonts.getTertiaryColor());
+        username.setForeground(MyFonts.getQuaternaryColor());
 
         // create logout button
         // button decoration
         JButton logoutBtn = new JButton("LOG OUT");
         logoutBtn.setFont(MyFonts.getSecondaryFont());
         logoutBtn.setBackground(MyFonts.getPrimaryColor());
-        logoutBtn.setForeground(MyFonts.getTertiaryColor());
+        logoutBtn.setForeground(MyFonts.getQuaternaryColor());
         logoutBtn.setOpaque(true);
         logoutBtn.setBorderPainted(false);
         // button functionality

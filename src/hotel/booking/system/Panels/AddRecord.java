@@ -1,10 +1,13 @@
 package hotel.booking.system.Panels;
-import hotel.booking.system.Functions.MyFonts;
+import hotel.booking.system.Functions.*;
+import hotel.booking.system.Panels.*;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
 import javax.swing.border.EmptyBorder;
 
-public class AddRecord extends JPanel {
+public class AddRecord extends JPanel implements MouseListener {
     JLabel startDate = new JLabel("Start Date:");
     JLabel endDate = new JLabel("End Date:");
     JLabel name = new JLabel("Name:");
@@ -12,8 +15,8 @@ public class AddRecord extends JPanel {
     JLabel contact = new JLabel("Contact:");
     JLabel email = new JLabel("Email:");
     
-    JTextField startDateTF = new JTextField("", 16);
-    JTextField endDateTF = new JTextField("", 16);
+    JSpinner startdateSpinner = new JSpinner(new SpinnerDateModel());
+    JSpinner endDateSpinner = new JSpinner(new SpinnerDateModel());
     JTextField nameTF = new JTextField("", 16);
     JTextField ICPassTF = new JTextField("", 16);
     JTextField contactTF = new JTextField("", 16);
@@ -57,7 +60,7 @@ public class AddRecord extends JPanel {
         
         for (int i = 0; i < 20; i++) {
             radioBtns[i] = new JRadioButton();
-            radioBtns[i].setText(String.valueOf(i));
+            radioBtns[i].setText(Rooms.getList()[i]);
         }
         
         for (int i = 0; i < 11; i++) {
@@ -67,24 +70,52 @@ public class AddRecord extends JPanel {
             switch (i) {
                 case 0:
                     panels[i].setLayout(new FlowLayout(FlowLayout.LEADING, 0, 5));
+                    
+                    // decoration for start date label
                     startDate.setBorder(new EmptyBorder(0, 0, 0, 10));
+                    
+                    JSpinner.DateEditor startDateEditor = new JSpinner.DateEditor(startdateSpinner, "yyyy/MM/dd");
+                    startdateSpinner.setEditor(startDateEditor);
+                    startdateSpinner.setPreferredSize(new Dimension(218, 24));
+                    startdateSpinner.setValue(Records.getStartTime()); // will only show the current time
+                    
                     panels[i].add(startDate);
-                    panels[i].add(startDateTF);
+                    panels[i].add(startdateSpinner);
                     break;
                 case 1:
                     panels[i].setLayout(new FlowLayout(FlowLayout.LEADING, 0, 5));
+                    
+                    // decoration for end date label
                     endDate.setBorder(new EmptyBorder(0, 0, 0, 16));
+                    
+                    JSpinner.DateEditor endDateEditor = new JSpinner.DateEditor(endDateSpinner, "yyyy/MM/dd");
+                    endDateSpinner.setEditor(endDateEditor);
+                    endDateSpinner.setPreferredSize(new Dimension(218, 24));
+                    endDateSpinner.setValue(Records.getEndTime()); // will only show the current time
+                    
+                    // decoration for search button
                     searchBtn.setBorderPainted(false);
-                    searchBtn.setForeground(MyFonts.getTertiaryColor());
+                    searchBtn.setForeground(MyFonts.getQuaternaryColor());
+                    searchBtn.addMouseListener(this);
+                    // container to create custom decoration for search button
                     searchBtnContainer.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
                     searchBtnContainer.add(searchBtn);
                     searchBtnContainer.setBackground(MyFonts.getPrimaryColor());
+                    
+                    // container that act as a left margin
+                    JPanel searchMarginContainer = new JPanel();
+                    searchMarginContainer.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
+                    searchMarginContainer.add(searchBtnContainer);
+                    searchMarginContainer.setBorder(new EmptyBorder(0, 30, 0, 0));
+                    
                     panels[i].add(endDate);
-                    panels[i].add(endDateTF);
-                    panels[i].add(searchBtnContainer);
+                    panels[i].add(endDateSpinner);
+                    panels[i].add(searchMarginContainer);
                     break;
                 case 2:
                     panels[i].setLayout(new FlowLayout(FlowLayout.LEADING, -5, 5));
+                    
+                    // display first 5 room selections
                     for (int j = 0; j < 5; j++) {
                         roomBtns.add(radioBtns[j]);
                         panels[i].add(radioBtns[j]);
@@ -92,6 +123,8 @@ public class AddRecord extends JPanel {
                     break;
                 case 3:
                     panels[i].setLayout(new FlowLayout(FlowLayout.LEADING, -5, 5));
+                    
+                    // display next 5 room selections
                     for (int j = 5; j < 10; j++) {
                         roomBtns.add(radioBtns[j]);
                         panels[i].add(radioBtns[j]);
@@ -99,6 +132,8 @@ public class AddRecord extends JPanel {
                     break;
                 case 4:
                     panels[i].setLayout(new FlowLayout(FlowLayout.LEADING, -5, 5));
+                    
+                    // display next 5 room selections
                     for (int j = 10; j < 15; j++) {
                         roomBtns.add(radioBtns[j]);
                         panels[i].add(radioBtns[j]);
@@ -106,6 +141,8 @@ public class AddRecord extends JPanel {
                     break;
                 case 5:
                     panels[i].setLayout(new FlowLayout(FlowLayout.LEADING, -5, 5));
+                    
+                    // display last 5 room selections
                     for (int j = 15; j < 20; j++) {
                         roomBtns.add(radioBtns[j]);
                         panels[i].add(radioBtns[j]);
@@ -113,44 +150,65 @@ public class AddRecord extends JPanel {
                     break;
                 case 6:
                     panels[i].setLayout(new FlowLayout(FlowLayout.LEADING, 0, 5));
+                    
+                    // decoration for name label and text field
                     name.setBorder(new EmptyBorder(0, 0, 0, 38));
                     panels[i].add(name);
                     panels[i].add(nameTF);
                     break;
                 case 7:
                     panels[i].setLayout(new FlowLayout(FlowLayout.LEADING, 0, 5));
+                    
+                    // decoration for ic label and text field
                     ICPass.setBorder(new EmptyBorder(0, 0, 0, 26));
                     panels[i].add(ICPass);
                     panels[i].add(ICPassTF);
                     break;
                 case 8:
                     panels[i].setLayout(new FlowLayout(FlowLayout.LEADING, 0, 5));
+                    
+                    // decoration for contac label and text field
                     contact.setBorder(new EmptyBorder(0, 0, 0, 26));
                     panels[i].add(contact);
                     panels[i].add(contactTF);
                     break;
                 case 9:
                     panels[i].setLayout(new FlowLayout(FlowLayout.LEADING, 0, 5));
+                    
+                    // decoration for email label and text field
                     email.setBorder(new EmptyBorder(0, 0, 0, 41));
                     panels[i].add(email);
                     panels[i].add(emailTF);
                     break;
                 case 10:
                     panels[i].setLayout(new FlowLayout(FlowLayout.LEADING, 0, 5));
+                    
+                    // decoration for save button
                     saveBtn.setBorderPainted(false);
-                    saveBtn.setForeground(MyFonts.getTertiaryColor());
+                    saveBtn.setForeground(MyFonts.getQuaternaryColor());
+                    saveBtn.addMouseListener(this);
+                    // container to create custom decoration for search button
                     saveBtnContainer.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
                     saveBtnContainer.add(saveBtn);
                     saveBtnContainer.setBackground(MyFonts.getPrimaryColor());
                     
+                    // decoration for reset button
                     resetBtn.setBorderPainted(false);
-                    resetBtn.setForeground(MyFonts.getTertiaryColor());
+                    resetBtn.setForeground(MyFonts.getQuaternaryColor());
+                    resetBtn.addMouseListener(this);
+                    // container to create custom decoration for reset button
                     resetBtnContainer.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
                     resetBtnContainer.add(resetBtn);
                     resetBtnContainer.setBackground(MyFonts.getPrimaryColor());
                     
+                    // container that act as a left margin
+                    JPanel resetMarginContainer = new JPanel();
+                    resetMarginContainer.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
+                    resetMarginContainer.add(resetBtnContainer);
+                    resetMarginContainer.setBorder(new EmptyBorder(0, 30, 0, 0));
+                    
                     panels[i].add(saveBtnContainer);
-                    panels[i].add(resetBtnContainer);
+                    panels[i].add(resetMarginContainer);
             }
         }
         
@@ -158,5 +216,57 @@ public class AddRecord extends JPanel {
         
         add(headPanel, BorderLayout.NORTH);
         add(mainContainer, BorderLayout.CENTER);
+    }
+    
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        if (e.getSource() == searchBtn) {
+            searchBtnContainer.setBackground(MyFonts.getSecondaryHoverColor());
+        } else if (e.getSource() == saveBtn) {
+            saveBtnContainer.setBackground(MyFonts.getSecondaryHoverColor());
+        } else if (e.getSource() == resetBtn) {
+            resetBtnContainer.setBackground(MyFonts.getSecondaryHoverColor());
+        }
+    }
+    
+    @Override
+    public void mouseExited(MouseEvent e) {
+        if (e.getSource() == searchBtn) {
+            searchBtnContainer.setBackground(MyFonts.getPrimaryColor());
+        } else if (e.getSource() == saveBtn) {
+            saveBtnContainer.setBackground(MyFonts.getPrimaryColor());
+        } else if (e.getSource() == resetBtn) {
+            resetBtnContainer.setBackground(MyFonts.getPrimaryColor());
+        }
+    }
+    
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (e.getSource() == searchBtn) {
+            System.out.println(Records.getLastIndex());
+        } else if (e.getSource() == saveBtn) {
+            String selectedRoom = "0";
+            for (int i = 0; i < 20; i++) {
+                if (radioBtns[i].isSelected()) {
+                    selectedRoom = radioBtns[i].getText();
+                }
+            }
+            try {
+                Records.addList(new Records((Date) startdateSpinner.getValue(), (Date) endDateSpinner.getValue(), selectedRoom, nameTF.getText(), ICPassTF.getText(), contactTF.getText(), emailTF.getText(), true));
+            } catch (Exception error) {
+                System.out.println("Unable to create record");
+                System.out.println("Error code: " + error);
+            }
+        }
+    }
+    
+    @Override
+    public void mouseReleased(MouseEvent e) {
+    
+    }
+    
+    @Override
+    public void mousePressed(MouseEvent e) {
+    
     }
 }
