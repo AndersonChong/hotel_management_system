@@ -10,6 +10,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 public class EditRecord extends JPanel implements MouseListener {
+    int index;
+    
     // initialize labels
     JLabel startDate = new JLabel("Start Date:");
     JLabel endDate = new JLabel("End Date:");
@@ -31,12 +33,14 @@ public class EditRecord extends JPanel implements MouseListener {
     JButton searchBtn = new JButton("Search");
     JButton saveBtn = new JButton("Save");
     JButton resetBtn = new JButton("Reset");
+    JButton deleteBtn = new JButton("Delete");
     JButton cancelBtn = new JButton("Cancel");
     
     // initialize containers used for custom buttons decoration
     JPanel searchBtnContainer = new JPanel();
     JPanel saveBtnContainer = new JPanel();
     JPanel resetBtnContainer = new JPanel();
+    JPanel deleteBtnContainer = new JPanel();
     JPanel cancelBtnContainer = new JPanel();
     
     // create rows of panels to place elements inside
@@ -46,9 +50,13 @@ public class EditRecord extends JPanel implements MouseListener {
     
     // constructor used to initialize text fields value based on specific record
     public EditRecord(int index) {
+        this.index = index;
+        
         for (int i = 0; i < 20; i++) {
             radioBtns[i] = new JRadioButton();
             radioBtns[i].setText(Rooms.getList()[i]);
+            radioBtns[i].setEnabled(false);
+            radioBtns[i].addMouseListener(this);
         }
         
         for (String[] record : Records.getList()) {
@@ -99,7 +107,7 @@ public class EditRecord extends JPanel implements MouseListener {
                     case "A210":
                         radioBtns[19].setSelected(true);
                 }
-                DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
                 
                 Date startDateParsed;
                 try {
@@ -112,6 +120,7 @@ public class EditRecord extends JPanel implements MouseListener {
                 startdateSpinner.setEditor(startDateEditor);
                 startdateSpinner.setPreferredSize(new Dimension(218, 24));
                 startdateSpinner.setValue(startDateParsed);
+                startdateSpinner.setEnabled(false);
                 
                 Date endDateParsed;
                 try {
@@ -123,8 +132,10 @@ public class EditRecord extends JPanel implements MouseListener {
                 JSpinner.DateEditor endDateEditor = new JSpinner.DateEditor(endDateSpinner, "yyyy/MM/dd");
                 endDateSpinner.setEditor(endDateEditor);
                 endDateSpinner.setPreferredSize(new Dimension(218, 24));
-                endDateSpinner.setValue(endDateParsed); // will only show the current time
+                endDateSpinner.setValue(endDateParsed);
+                endDateSpinner.setEnabled(false);
                 
+                searchBtn.setEnabled(false);
             }
         }
         
@@ -279,22 +290,37 @@ public class EditRecord extends JPanel implements MouseListener {
                     resetBtnContainer.add(resetBtn);
                     resetBtnContainer.setBackground(MyFonts.getPrimaryColor());
                     
-                    // decoration for reset button
+                    // decoration for delete button
+                    deleteBtn.setBorderPainted(false);
+                    deleteBtn.setForeground(MyFonts.getQuaternaryColor());
+                    deleteBtn.addMouseListener(this);
+                    // container to delete custom decoration for delete button
+                    deleteBtnContainer.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
+                    deleteBtnContainer.add(deleteBtn);
+                    deleteBtnContainer.setBackground(MyFonts.getPrimaryColor());
+                    
+                    // decoration for cancel button
                     cancelBtn.setBorderPainted(false);
                     cancelBtn.setForeground(MyFonts.getQuaternaryColor());
                     cancelBtn.addMouseListener(this);
-                    // container to create custom decoration for reset button
+                    // container to create custom decoration for cancel button
                     cancelBtnContainer.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
                     cancelBtnContainer.add(cancelBtn);
                     cancelBtnContainer.setBackground(MyFonts.getPrimaryColor());
                     
-                    // container that act as a left margin
+                    // container that act as a left margin for reset button
                     JPanel resetMarginContainer = new JPanel();
                     resetMarginContainer.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
                     resetMarginContainer.add(resetBtnContainer);
                     resetMarginContainer.setBorder(new EmptyBorder(0, 30, 0, 0));
                     
-                    // container that act as a left margin
+                    // container that act as a left margin for delete button
+                    JPanel deleteMarginContainer = new JPanel();
+                    deleteMarginContainer.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
+                    deleteMarginContainer.add(deleteBtnContainer);
+                    deleteMarginContainer.setBorder(new EmptyBorder(0, 30, 0, 0));
+                    
+                    // container that act as a left margin for cancel button
                     JPanel cancelMarginContainer = new JPanel();
                     cancelMarginContainer.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
                     cancelMarginContainer.add(cancelBtnContainer);
@@ -302,6 +328,7 @@ public class EditRecord extends JPanel implements MouseListener {
                     
                     panels[i].add(saveBtnContainer);
                     panels[i].add(resetMarginContainer);
+                    panels[i].add(deleteMarginContainer);
                     panels[i].add(cancelMarginContainer);
             }
         }
@@ -312,6 +339,26 @@ public class EditRecord extends JPanel implements MouseListener {
         add(mainContainer, BorderLayout.CENTER);
     }
     
+    public void reset() {
+        startdateSpinner.setValue(Records.getStartTime());
+        endDateSpinner.setValue(Records.getEndTime());
+        nameTF.setText("");
+        ICPassTF.setText("");
+        contactTF.setText("");
+        emailTF.setText("");
+        roomBtns.clearSelection();
+        for(int i = 0; i < radioBtns.length; i++) {
+            radioBtns[i].setEnabled(false);
+        }
+        startdateSpinner.setEnabled(true);
+        endDateSpinner.setEnabled(true);
+        searchBtn.setEnabled(true);
+        nameTF.setEnabled(false);
+        ICPassTF.setEnabled(false);
+        contactTF.setEnabled(false);
+        emailTF.setEnabled(false);
+    }
+    
     @Override
     public void mouseEntered(MouseEvent e) {
         if (e.getSource() == searchBtn) {
@@ -320,6 +367,8 @@ public class EditRecord extends JPanel implements MouseListener {
             saveBtnContainer.setBackground(MyFonts.getSecondaryHoverColor());
         } else if (e.getSource() == resetBtn) {
             resetBtnContainer.setBackground(MyFonts.getSecondaryHoverColor());
+        } else if (e.getSource() == deleteBtn) {
+            deleteBtnContainer.setBackground(MyFonts.getSecondaryHoverColor());
         } else if (e.getSource() == cancelBtn) {
             cancelBtnContainer.setBackground(MyFonts.getSecondaryHoverColor());
         }
@@ -333,6 +382,8 @@ public class EditRecord extends JPanel implements MouseListener {
             saveBtnContainer.setBackground(MyFonts.getPrimaryColor());
         } else if (e.getSource() == resetBtn) {
             resetBtnContainer.setBackground(MyFonts.getPrimaryColor());
+        } else if (e.getSource() == deleteBtn) {
+            deleteBtnContainer.setBackground(MyFonts.getPrimaryColor());
         } else if (e.getSource() == cancelBtn) {
             cancelBtnContainer.setBackground(MyFonts.getPrimaryColor());
         }
@@ -345,29 +396,75 @@ public class EditRecord extends JPanel implements MouseListener {
     
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (e.getSource() == searchBtn) {
-            
+        if (e.getSource() == searchBtn && searchBtn.isEnabled()) {
+            searchRoom();
         } else if (e.getSource() == saveBtn) {
-            String selectedRoom = "0";
-            for (int i = 0; i < 20; i++) {
-                if (radioBtns[i].isSelected()) {
-                    selectedRoom = radioBtns[i].getText();
-                }
+            updateRecord();
+        } else if (e.getSource() == resetBtn) {
+            reset();
+        } else if (e.getSource() == deleteBtn) {
+            int result = JOptionPane.showConfirmDialog(null, "Confirm delete selected record?", "System Notification", JOptionPane.YES_NO_OPTION);
+            if (result == JOptionPane.YES_OPTION) {
+                Records.delete(index);
+                HotelBookingSystem.setNav(0, 0);
             }
-            try {
-                Records.addList(new Records((Date) startdateSpinner.getValue(), (Date) endDateSpinner.getValue(), selectedRoom, nameTF.getText(), ICPassTF.getText(), contactTF.getText(), emailTF.getText(), true));
-            } catch (Exception error) {
-                System.out.println("Unable to create record");
-                System.out.println("Error code: " + error);
-            }
-            
         } else if (e.getSource() == cancelBtn) {
             HotelBookingSystem.setNav(0, 0);
+        }
+        
+        for (JRadioButton radioBtn : radioBtns) {
+            if (e.getSource() == radioBtn && radioBtn.isEnabled()) {
+                nameTF.setEnabled(true);
+                ICPassTF.setEnabled(true);
+                contactTF.setEnabled(true);
+                emailTF.setEnabled(true);
+            }
         }
     }
     
     @Override
     public void mousePressed(MouseEvent e) {
     
+    }
+    
+    public void searchRoom() {
+        Date startDate = (Date) startdateSpinner.getValue();
+        Date endDate = (Date) endDateSpinner.getValue();
+        String availableRooms[] = Records.searchRooms(startDate,  endDate);
+        for (String room : availableRooms) {
+            int index = 0;
+            for (JRadioButton radioBtn : radioBtns) {
+                if (room.equalsIgnoreCase(radioBtn.getText())) {
+                    System.out.println(room);
+                    radioBtns[index].setEnabled(true);
+                }
+                index++;
+            }
+        }
+        startdateSpinner.setEnabled(false);
+        endDateSpinner.setEnabled(false);
+        searchBtn.setEnabled(false);
+    }
+    
+    public void updateRecord() {
+        if (nameTF.getText().isEmpty() || ICPassTF.getText().isEmpty() || contactTF.getText().isEmpty() || emailTF.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please filled all required fields", "System Notification", JOptionPane.PLAIN_MESSAGE);
+        } else {
+            String selectedRoom = "Invalid";
+            for (int i = 0; i < 20; i++) {
+                if (radioBtns[i].isSelected()) {
+                    selectedRoom = radioBtns[i].getText();
+                }
+            }
+            try {
+                Records.update(index, (Date) startdateSpinner.getValue(), (Date) endDateSpinner.getValue(), selectedRoom, nameTF.getText(), ICPassTF.getText(), contactTF.getText(), emailTF.getText());
+                for (int i = 0; i < 20; i++) {
+                    radioBtns[i].setEnabled(false);
+                }
+            } catch (Exception error) {
+                System.out.println("Unable to create record");
+                System.out.println("Error code: " + error);
+            }
+        }
     }
 }

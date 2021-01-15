@@ -12,6 +12,7 @@ public class HotelBookingSystem {
     static JFrame mainFrame;
     static JPanel mainContext;
     
+    static JPanel sideBar = new SideBar();
     static JPanel dashboard = new Dashboard();
     static JPanel addRecord = new AddRecord();
     static JPanel viewReceipt = new ViewReceipt();
@@ -44,15 +45,13 @@ public class HotelBookingSystem {
         panel.add(panel1, BorderLayout.NORTH);
         
         // add sidebar to the left side of main context panel
-        mainContext.add(new SideBar(), BorderLayout.WEST);
+        mainContext.add(sideBar, BorderLayout.WEST);
         mainContext.add(dashboard, BorderLayout.CENTER);
         
         mainFrame.setVisible(true);
     }
     
     public static void setNav(int index, int editIndex) {
-        
-        
         switch (index) {
             case 0:
                 Dashboard.refreshTable();

@@ -21,7 +21,7 @@ public class Dashboard extends JPanel {
         // head panel for date selection and display
         JPanel headPanel = new JPanel();
         headPanel.setLayout(new GridLayout(0, 2));
-        headPanel.setPreferredSize(new Dimension(36, 36));
+        headPanel.setPreferredSize(new Dimension(32, 32));
         headPanel.setBackground(new Color(238, 238, 238));
         
         // buttons for date navigation
@@ -75,9 +75,8 @@ public class Dashboard extends JPanel {
         // create a table with the predefine model
         table = new JTable(model);
         // set size for first column since it doesn't require much space
-        table.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
         TableColumnModel columnModel = table.getColumnModel();
-        columnModel.getColumn(0).setPreferredWidth(10);
+        columnModel.getColumn(0).setPreferredWidth(30);
         
         table.addMouseListener(new MouseAdapter() {
             public void mouseReleased(MouseEvent e) {
@@ -94,6 +93,7 @@ public class Dashboard extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
     }
     
+    // method to refresh table after manipulating the data
     public static void refreshTable() {
         DefaultTableModel model = new DefaultTableModel();
         
@@ -119,5 +119,8 @@ public class Dashboard extends JPanel {
         }
         
         table.setModel(model);
+        
+        TableColumnModel columnModel = table.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(30);
     }
 }

@@ -1,8 +1,20 @@
-1, Thu Jan 14 16:08:03 MYT 2021, Fri Jan 15 16:08:03 MYT 2021, A101, anderson, 010731101235, 0176655385, anderson@gmail.com
-2, Thu Jan 14 16:08:03 MYT 2021, Fri Jan 15 16:08:03 MYT 2021, A202, accee, 010731101235, 0176655385, accee@gmail.com
-3, Thu Jan 14 16:08:03 MYT 2021, Fri Jan 15 16:08:03 MYT 2021, A203, ait store, 010731101235, 0176655385, support@ait-store.com
-4, Thu Jan 14 23:00:07 MYT 2021, Fri Jan 15 23:00:07 MYT 2021, A209, asdf, asdf, asdf, asdf
-5, Thu Jan 14 23:16:48 MYT 2021, Fri Jan 15 23:16:48 MYT 2021, A204, asdf, asdf, asdf, asdf
-6, Thu Jan 14 23:16:48 MYT 2021, Fri Jan 15 23:16:48 MYT 2021, A205, qwer, qwer, qwer, qwer
-7, Thu Jan 14 23:18:33 MYT 2021, Fri Jan 15 23:18:33 MYT 2021, 0, qwer, qwer, qwer, qwer
-8, Sun Jan 17 00:00:00 MYT 2021, Tue Jan 19 00:00:00 MYT 2021, A104, aaaa, aaaa, aaaa, aaaa
+1, 2021/01/15, 2021/01/20, A101, Anderson, 010731101235, 0176655385, anderson@gmail.com
+2, 2021/01/20, 2021/01/25, A110, Accee, 010731101235, 0176655385, accee@create.com
+3, 2021/01/05, 2021/01/13, A208, AIT Store, 010731101235, 0176655385, support@ait-store.com
+4, 2021/01/15, 2021/01/16, A108, Brandon, 740305103367, 0125544853, brandon@aes-it.com
+5, 2021/01/10, 2021/01/13, A103, Mango, 010731101235, 0176655385, accee@gmail.com
+6, 2021/01/15, 2021/01/17, A109, asdf, sasdf, asdf, asfd
+7, 2021/01/15, 2021/01/17, A204, asdfasdf, asdf, asdf, asdf
+8, 2021/01/15, 2021/01/17, A104, asdf, asdf, asdf, asdf
+9, 2021/01/15, 2021/01/21, A105, asdf, asdf, asdf, asdf
+10, 2021/01/15, 2021/01/17, A205, asdf, asdf, asaf, asdf
+11, 2021/01/15, 2021/01/16, A103, asdf, asdf, asdf, asdf
+12, 2021/01/15, 2021/01/16, A110, asdf, asdf, asdf, asdf
+13, 2021/01/15, 2021/01/17, A209, asdf, asdf, asdf, asdf
+14, 2021/01/15, 2021/01/19, A203, asdf, asdf, asdf, asdf
+15, 2021/01/15, 2021/01/18, A208, asdf, asdf, asdf, asdf
+16, 2021/01/15, 2021/01/16, A202, asdf, asdf, asdf, asdf
+17, 2021/01/15, 2021/01/17, A207, asdf, asdf, asdf, asdf
+18, 2021/01/16, 2021/01/17, A107, asdf, asdf, asdf, asdf
+19, 2021/01/16, 2021/01/19, A103, asdf, asdf, asdf, asdf
+20, 2021/01/16, 2021/01/16, A108, asdf, asdf, asdf, asdf

@@ -1,6 +1,5 @@
 package hotel.booking.system.Panels;
 import hotel.booking.system.Functions.*;
-import hotel.booking.system.Panels.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -58,9 +57,16 @@ public class AddRecord extends JPanel implements MouseListener {
         mainContext.setLayout(new GridLayout(11, 1));
         mainContext.setBounds(0, 0, 560, 435);
         
+        nameTF.setEnabled(false);
+        ICPassTF.setEnabled(false);
+        contactTF.setEnabled(false);
+        emailTF.setEnabled(false);
+        
         for (int i = 0; i < 20; i++) {
             radioBtns[i] = new JRadioButton();
             radioBtns[i].setText(Rooms.getList()[i]);
+            radioBtns[i].setEnabled(false);
+            radioBtns[i].addMouseListener(this);
         }
         
         for (int i = 0; i < 11; i++) {
@@ -218,6 +224,26 @@ public class AddRecord extends JPanel implements MouseListener {
         add(mainContainer, BorderLayout.CENTER);
     }
     
+    public void reset() {
+        startdateSpinner.setValue(Records.getStartTime());
+        endDateSpinner.setValue(Records.getEndTime());
+        nameTF.setText("");
+        ICPassTF.setText("");
+        contactTF.setText("");
+        emailTF.setText("");
+        roomBtns.clearSelection();
+        for(int i = 0; i < radioBtns.length; i++) {
+            radioBtns[i].setEnabled(false);
+        }
+        startdateSpinner.setEnabled(true);
+        endDateSpinner.setEnabled(true);
+        searchBtn.setEnabled(true);
+        nameTF.setEnabled(false);
+        ICPassTF.setEnabled(false);
+        contactTF.setEnabled(false);
+        emailTF.setEnabled(false);
+    }
+    
     @Override
     public void mouseEntered(MouseEvent e) {
         if (e.getSource() == searchBtn) {
@@ -242,31 +268,70 @@ public class AddRecord extends JPanel implements MouseListener {
     
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (e.getSource() == searchBtn) {
-            System.out.println(Records.getLastIndex());
+        
+    }
+    
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        if (e.getSource() == searchBtn && searchBtn.isEnabled()) {
+            searchRoom();
         } else if (e.getSource() == saveBtn) {
-            String selectedRoom = "0";
+            addRecord();
+        } else if (e.getSource() == resetBtn) {
+            reset();
+        }
+        
+        for (JRadioButton radioBtn : radioBtns) {
+            if (e.getSource() == radioBtn && radioBtn.isEnabled()) {
+                nameTF.setEnabled(true);
+                ICPassTF.setEnabled(true);
+                contactTF.setEnabled(true);
+                emailTF.setEnabled(true);
+            }
+        }
+    }
+    
+    @Override
+    public void mousePressed(MouseEvent e) {
+    
+    }
+    
+    public void searchRoom() {
+        Date startDate = (Date) startdateSpinner.getValue();
+        Date endDate = (Date) endDateSpinner.getValue();
+        String availableRooms[] = Records.searchRooms(startDate,  endDate);
+        for (String room : availableRooms) {
+            int index = 0;
+            for (JRadioButton radioBtn : radioBtns) {
+                if (room.equalsIgnoreCase(radioBtn.getText())) {
+                    System.out.println(room);
+                    radioBtns[index].setEnabled(true);
+                }
+                index++;
+            }
+        }
+        startdateSpinner.setEnabled(false);
+        endDateSpinner.setEnabled(false);
+        searchBtn.setEnabled(false);
+    }
+    
+    public void addRecord() {
+        if (nameTF.getText().isEmpty() || ICPassTF.getText().isEmpty() || contactTF.getText().isEmpty() || emailTF.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please filled all required fields", "System Notification", JOptionPane.PLAIN_MESSAGE);
+        } else {
+            String selectedRoom = "Invalid";
             for (int i = 0; i < 20; i++) {
                 if (radioBtns[i].isSelected()) {
                     selectedRoom = radioBtns[i].getText();
                 }
             }
             try {
-                Records.addList(new Records((Date) startdateSpinner.getValue(), (Date) endDateSpinner.getValue(), selectedRoom, nameTF.getText(), ICPassTF.getText(), contactTF.getText(), emailTF.getText(), true));
+                new Records((Date) startdateSpinner.getValue(), (Date) endDateSpinner.getValue(), selectedRoom, nameTF.getText(), ICPassTF.getText(), contactTF.getText(), emailTF.getText(), true);
             } catch (Exception error) {
                 System.out.println("Unable to create record");
                 System.out.println("Error code: " + error);
             }
+            reset();
         }
-    }
-    
-    @Override
-    public void mouseReleased(MouseEvent e) {
-    
-    }
-    
-    @Override
-    public void mousePressed(MouseEvent e) {
-    
     }
 }
