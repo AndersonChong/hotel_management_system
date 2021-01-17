@@ -8,11 +8,11 @@ import java.util.*;
 import javax.swing.border.EmptyBorder;
 import hotel.booking.system.HotelBookingSystem;
 
-public class ViewReceipt extends JPanel{
+public class SearchRecord extends JPanel{
     DefaultTableModel model = new DefaultTableModel();
     static JTable table;
     
-    public ViewReceipt() {
+    public SearchRecord() {
         // set border layout for dashboard panel
         setLayout(new BorderLayout(0, 30));
         setBorder(new EmptyBorder(30, 30, 30, 30));
@@ -24,7 +24,7 @@ public class ViewReceipt extends JPanel{
         
         // label for month display
         JLabel title = new JLabel();
-        title.setText("VIEW RECEIPTS");
+        title.setText("SEARCH RECORDS");
         title.setFont(MyFonts.getHeader2());
         title.setForeground(MyFonts.getPrimaryColor());
         
@@ -36,22 +36,7 @@ public class ViewReceipt extends JPanel{
         model.addColumn("End Date");
         model.addColumn("Name");
         model.addColumn("Room No");
-        model.addColumn("Total");
-        model.addColumn("Total(w.Tax)");
-        ArrayList<String[]> receipts = Receipts.getList();
-        
-        // add data into table
-        for (String[] outerArray : receipts) {
-            String[] receiptPlaceholder = new String[7];
-            receiptPlaceholder[0] = outerArray[0];
-            receiptPlaceholder[1] = outerArray[1];
-            receiptPlaceholder[2] = outerArray[2];
-            receiptPlaceholder[3] = outerArray[4];
-            receiptPlaceholder[4] = outerArray[3];
-            receiptPlaceholder[5] = outerArray[6];
-            receiptPlaceholder[6] = outerArray[7];
-            model.addRow(receiptPlaceholder);
-        }
+        model.addColumn("Contact");
         
         // create a table with the predefine model
         table = new JTable(model);
@@ -60,13 +45,13 @@ public class ViewReceipt extends JPanel{
         TableColumnModel columnModel = table.getColumnModel();
         columnModel.getColumn(0).setPreferredWidth(10);
         
-        table.addMouseListener(new MouseAdapter() {
-            public void mouseReleased(MouseEvent e) {
-                int row = table.getSelectedRow();
-                row++;
-                HotelBookingSystem.setNav(4, row);
-            }
-        });
+//        table.addMouseListener(new MouseAdapter() {
+//            public void mouseReleased(MouseEvent e) {
+//                int row = table.getSelectedRow();
+//                row++;
+//                HotelBookingSystem.setNav(4, row);
+//            }
+//        });
         
         // contain the table inside a scroll pane
         JScrollPane scrollPane = new JScrollPane(table);
@@ -76,7 +61,7 @@ public class ViewReceipt extends JPanel{
     }
     
     // method to refresh table after manipulating the data
-    public static void refreshTable() {
+    public static void refreshTable(ArrayList<String[]> searchList) {
         DefaultTableModel model = new DefaultTableModel();
         
         // setup model for table
@@ -85,21 +70,18 @@ public class ViewReceipt extends JPanel{
         model.addColumn("End Date");
         model.addColumn("Name");
         model.addColumn("Room No");
-        model.addColumn("Total");
-        model.addColumn("Total(w.Tax)");
-        ArrayList<String[]> receipts = Receipts.getList();
+        model.addColumn("Contact");
         
         // add data into table
-        for (String[] outerArray : receipts) {
-            String[] receiptPlaceholder = new String[7];
-            receiptPlaceholder[0] = outerArray[0];
-            receiptPlaceholder[1] = outerArray[1];
-            receiptPlaceholder[2] = outerArray[2];
-            receiptPlaceholder[3] = outerArray[4];
-            receiptPlaceholder[4] = outerArray[3];
-            receiptPlaceholder[5] = outerArray[6];
-            receiptPlaceholder[6] = outerArray[7];
-            model.addRow(receiptPlaceholder);
+        for (String[] outerArray : searchList) {
+            String[] recordPlaceholder = new String[6];
+            recordPlaceholder[0] = outerArray[0];
+            recordPlaceholder[1] = outerArray[1];
+            recordPlaceholder[2] = outerArray[2];
+            recordPlaceholder[3] = outerArray[4];
+            recordPlaceholder[4] = outerArray[3];
+            recordPlaceholder[5] = outerArray[6];
+            model.addRow(recordPlaceholder);
         }
         
         table.setModel(model);

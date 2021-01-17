@@ -8,9 +8,15 @@ import javax.swing.table.*;
 import java.util.*;
 import hotel.booking.system.HotelBookingSystem;
 
-public class Dashboard extends JPanel {
+public class Dashboard extends JPanel implements MouseListener {
     DefaultTableModel model = new DefaultTableModel();
     static JTable table;
+    
+    // buttons for date navigation
+    JPanel prevBtnContainer = new JPanel();
+    JButton prevBtn = new JButton("Prev");
+    JPanel nextBtnContainer = new JPanel();
+    JButton nextBtn = new JButton("Next");
     
     public Dashboard() {
         // set border layout for dashboard panel
@@ -21,29 +27,46 @@ public class Dashboard extends JPanel {
         // head panel for date selection and display
         JPanel headPanel = new JPanel();
         headPanel.setLayout(new GridLayout(0, 2));
-        headPanel.setPreferredSize(new Dimension(32, 32));
+        headPanel.setPreferredSize(new Dimension(24, 24));
         headPanel.setBackground(new Color(238, 238, 238));
         
-        // buttons for date navigation
-        JButton prevBtn = new JButton("P");
-        prevBtn.setPreferredSize(new Dimension(24, 24));
-        // TODO Can put button into panel to set gap between buttons
-//        prevBtn.setBorder(new EmptyBorder(0, 0, 0, 15));
-        JButton nextBtn = new JButton("N");
-        nextBtn.setPreferredSize(new Dimension(24, 24));
-        // TODO set hover and click decoration
+        // decoration for prev button
+        prevBtn.setBorderPainted(false);
+        prevBtn.setForeground(MyFonts.getQuaternaryColor());
+        prevBtn.setFont(MyFonts.getPrimaryFont());
+        prevBtn.addMouseListener(this);
+        // container to create custom decoration for prev button
+        prevBtnContainer.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
+        prevBtnContainer.add(prevBtn);
+        prevBtnContainer.setBackground(MyFonts.getPrimaryColor());
+        
+        // decoration for prev button
+        nextBtn.setBorderPainted(false);
+        nextBtn.setForeground(MyFonts.getQuaternaryColor());
+        nextBtn.setFont(MyFonts.getPrimaryFont());
+        nextBtn.addMouseListener(this);
+        // container to create custom decoration for prev button
+        nextBtnContainer.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
+        nextBtnContainer.add(nextBtn);
+        nextBtnContainer.setBackground(MyFonts.getPrimaryColor());
+        
+        // container that act as a left margin
+        JPanel nextMarginContainer = new JPanel();
+        nextMarginContainer.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
+        nextMarginContainer.add(nextBtnContainer);
+        nextMarginContainer.setBorder(new EmptyBorder(0, 15, 0, 0));
         
         // panel to contain buttons
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.TRAILING));
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.TRAILING, 0, -2));
         buttonPanel.setBackground(new Color(238, 238, 238));
-        buttonPanel.add(prevBtn);
-        buttonPanel.add(nextBtn);
+        buttonPanel.add(prevBtnContainer);
+        buttonPanel.add(nextMarginContainer);
         
         // label for month display
         JLabel month = new JLabel();
         month.setText("JAN");
-        month.setFont(MyFonts.getHeader1());
+        month.setFont(MyFonts.getHeader2());
         month.setForeground(MyFonts.getPrimaryColor());
         month.setBackground(new Color(238, 238, 238));
         
@@ -122,5 +145,38 @@ public class Dashboard extends JPanel {
         
         TableColumnModel columnModel = table.getColumnModel();
         columnModel.getColumn(0).setPreferredWidth(30);
+    }
+    
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        if (e.getSource() == prevBtn) {
+            prevBtnContainer.setBackground(MyFonts.getSecondaryHoverColor());
+        } else if (e.getSource() == nextBtn) {
+            nextBtnContainer.setBackground(MyFonts.getSecondaryHoverColor());
+        }
+    }
+    
+    @Override
+    public void mouseExited(MouseEvent e) {
+        if (e.getSource() == prevBtn) {
+            prevBtnContainer.setBackground(MyFonts.getPrimaryColor());
+        } else if (e.getSource() == nextBtn) {
+            nextBtnContainer.setBackground(MyFonts.getPrimaryColor());
+        }
+    }
+    
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        
+    }
+    
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        
+    }
+    
+    @Override
+    public void mousePressed(MouseEvent e) {
+    
     }
 }

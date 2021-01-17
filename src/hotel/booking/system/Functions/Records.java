@@ -1,5 +1,6 @@
 package hotel.booking.system.Functions;
 import hotel.booking.system.HotelBookingSystem;
+import hotel.booking.system.Panels.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -44,8 +45,11 @@ public class Records {
                 long total = Receipts.calTotal(diffInDays);
                 System.out.println(total);
                 
-                JOptionPane.showMessageDialog(null, "Record added successfully", "System Notification", JOptionPane.PLAIN_MESSAGE);
+                new Receipts(startDateStr, endDateStr, roomNum, name, ICPass, diffInDays * 350, total);
+                
+                JOptionPane.showMessageDialog(null, "Record added successfully. Please review generated receipt in receipt tab", "System Notification", JOptionPane.PLAIN_MESSAGE);
             } catch (Exception error) {
+                JOptionPane.showMessageDialog(null, "Unable to create record", "System Notification", JOptionPane.PLAIN_MESSAGE);
                 System.out.println("Unable to create record");
                 System.out.println("Error code: " + error);
             }
@@ -178,7 +182,10 @@ public class Records {
         }
         try {
             return Integer.parseInt(recordProperties[0]);
-        } catch (Exception e) {
+        } catch (Exception error) {
+            JOptionPane.showMessageDialog(null, "Unable to retrieve last record index", "System Notification", JOptionPane.PLAIN_MESSAGE);
+            System.out.println("Unable to retrieve last record index");
+            System.out.println("Error code: " + error);
             return 1;
         }
     }
@@ -214,5 +221,30 @@ public class Records {
             }
         }
         return returnRoomList;
+    }
+    
+    public static void searchRecords(String input) {
+        ArrayList<String[]> searchList = new ArrayList<String[]>();
+        if (!input.isEmpty()) {
+            System.out.println(input);
+            File file = new File("src/hotel/booking/system/Files/record.txt");
+                    
+            try {
+                Scanner scanner = new Scanner(file);
+                while (scanner.hasNextLine()) {
+                    String recordString = scanner.nextLine();
+                    String recordProperties[] = recordString.split(", ");
+                    
+                    if (recordProperties[4].toUpperCase().contains(input.toUpperCase())) {
+                        searchList.add(recordProperties);
+                    }
+                }
+            } catch (Exception e) {
+            }
+            
+            SearchRecord.refreshTable(searchList);
+        } else {
+            SearchRecord.refreshTable(searchList);
+        }
     }
 }

@@ -4,10 +4,12 @@ import hotel.booking.system.HotelBookingSystem;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.*;
 
 public class SideBar extends JPanel implements MouseListener {
     JPanel navPanels[] = new JPanel[4];
     JButton navBtns[] = new JButton[3];
+    JTextField searchBox = new JTextField();
     
     boolean[] navBtnsEnabled = {true, false, false};
     
@@ -22,9 +24,20 @@ public class SideBar extends JPanel implements MouseListener {
         navContainer.setPreferredSize(new Dimension(220, 220));
         navContainer.setLayout(new GridLayout(0, 1));
         
-        JTextField searchBox = new JTextField();
         searchBox.setPreferredSize(new Dimension(150, 20));
         searchBox.setHorizontalAlignment(JTextField.CENTER);
+        searchBox.addMouseListener(this);
+        searchBox.getDocument().addDocumentListener(new DocumentListener() {
+            public void changedUpdate(DocumentEvent e) {
+                Records.searchRecords(searchBox.getText());
+            }
+            public void removeUpdate(DocumentEvent e) {
+                Records.searchRecords(searchBox.getText());
+            }
+            public void insertUpdate(DocumentEvent e) {
+                Records.searchRecords(searchBox.getText());
+            }
+        });
         
         // array to store all navigation buttons top to bottom
         for (int i = 0; i < 3; i++) {
@@ -116,6 +129,9 @@ public class SideBar extends JPanel implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        if (e.getSource() == searchBox) {
+            HotelBookingSystem.setNav(5, 0);
+        }
         for (int i = 0; i < 3; i++) {
             if (e.getSource() == navBtns[i] && navBtnsEnabled[i] == false) {
                 navBtnsEnabled[i] = true;
@@ -128,6 +144,7 @@ public class SideBar extends JPanel implements MouseListener {
                 } else if (i == 2) {
                     navBtns[i].setIcon(new ImageIcon("src/hotel/booking/system/Images/dollar-white.png"));
                 }
+                searchBox.setText("");
                 HotelBookingSystem.setNav(i, 0);
             }
             if (e.getSource() != navBtns[i]) {
