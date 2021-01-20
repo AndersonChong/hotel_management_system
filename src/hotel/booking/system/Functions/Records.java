@@ -183,10 +183,9 @@ public class Records {
         try {
             return Integer.parseInt(recordProperties[0]);
         } catch (Exception error) {
-            JOptionPane.showMessageDialog(null, "Unable to retrieve last record index", "System Notification", JOptionPane.PLAIN_MESSAGE);
-            System.out.println("Unable to retrieve last record index");
+            System.out.println("No record found in record file. Index defaulted to 1");
             System.out.println("Error code: " + error);
-            return 1;
+            return 0;
         }
     }
     
@@ -246,5 +245,12 @@ public class Records {
         } else {
             SearchRecord.refreshTable(searchList);
         }
+    }
+    
+    public static int getCurrentMonth() {
+        Date now = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("MM");
+        String monthStr = format.format(now);
+        return Integer.parseInt(monthStr);
     }
 }

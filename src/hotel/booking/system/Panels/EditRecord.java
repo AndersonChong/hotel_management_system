@@ -51,6 +51,7 @@ public class EditRecord extends JPanel implements MouseListener {
     // constructor used to initialize text fields value based on specific record
     public EditRecord(int index) {
         this.index = index;
+        System.out.println(index);
         
         for (int i = 0; i < 20; i++) {
             radioBtns[i] = new JRadioButton();

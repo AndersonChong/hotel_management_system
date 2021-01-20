@@ -99,10 +99,9 @@ public class Receipts {
         try {
             return Integer.parseInt(receiptProperties[0]);
         } catch (Exception error) {
-            JOptionPane.showMessageDialog(null, "Unable to retrieve last receipt index", "System Notification", JOptionPane.PLAIN_MESSAGE);
-            System.out.println("Unable to retrieve last receipt index");
+            System.out.println("No record found in receipt file. Index defaulted to 1");
             System.out.println("Error code: " + error);
-            return 1;
+            return 0;
         }
     }
     

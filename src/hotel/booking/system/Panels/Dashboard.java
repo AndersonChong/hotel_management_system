@@ -6,9 +6,11 @@ import java.awt.event.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.*;
 import java.util.*;
+import java.text.*;
 import hotel.booking.system.HotelBookingSystem;
 
 public class Dashboard extends JPanel implements MouseListener {
+    // table and table model declaration
     DefaultTableModel model = new DefaultTableModel();
     static JTable table;
     
@@ -17,6 +19,11 @@ public class Dashboard extends JPanel implements MouseListener {
     JButton prevBtn = new JButton("Prev");
     JPanel nextBtnContainer = new JPanel();
     JButton nextBtn = new JButton("Next");
+    JLabel month = new JLabel();
+    
+    // keep track of the current selected date
+    static int selectedMonth = Records.getCurrentMonth();
+    String months[] = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
     
     public Dashboard() {
         // set border layout for dashboard panel
@@ -64,8 +71,7 @@ public class Dashboard extends JPanel implements MouseListener {
         buttonPanel.add(nextMarginContainer);
         
         // label for month display
-        JLabel month = new JLabel();
-        month.setText("JAN");
+        month.setText(months[selectedMonth - 1]);
         month.setFont(MyFonts.getHeader2());
         month.setForeground(MyFonts.getPrimaryColor());
         month.setBackground(new Color(238, 238, 238));
@@ -83,17 +89,29 @@ public class Dashboard extends JPanel implements MouseListener {
         model.addColumn("Contact");
         ArrayList<String[]> records = Records.getList();
         
-        // add data into table
-        for (String[] outerArray : records) {
-            String[] recordPlaceholder = new String[6];
-            recordPlaceholder[0] = outerArray[0];
-            recordPlaceholder[1] = outerArray[1];
-            recordPlaceholder[2] = outerArray[2];
-            recordPlaceholder[3] = outerArray[4];
-            recordPlaceholder[4] = outerArray[3];
-            recordPlaceholder[5] = outerArray[6];
-            model.addRow(recordPlaceholder);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
+        
+        try {
+            // add data into table
+            for (String[] outerArray : records) {
+                if (Integer.parseInt(monthFormat.format(format.parse(outerArray[1]))) == selectedMonth) {
+                    String[] recordPlaceholder = new String[6];
+                    recordPlaceholder[0] = outerArray[0];
+                    recordPlaceholder[1] = outerArray[1];
+                    recordPlaceholder[2] = outerArray[2];
+                    recordPlaceholder[3] = outerArray[4];
+                    recordPlaceholder[4] = outerArray[3];
+                    recordPlaceholder[5] = outerArray[6];
+                    model.addRow(recordPlaceholder);
+                }
+            }
+        } catch (Exception error) {
+            JOptionPane.showMessageDialog(null, "Unable to display selected month records", "System Notification", JOptionPane.PLAIN_MESSAGE);
+            System.out.println("Unable to display selected month records");
+            System.out.println("Error code: " + error);
         }
+        
         
         // create a table with the predefine model
         table = new JTable(model);
@@ -104,8 +122,8 @@ public class Dashboard extends JPanel implements MouseListener {
         table.addMouseListener(new MouseAdapter() {
             public void mouseReleased(MouseEvent e) {
                 int row = table.getSelectedRow();
-                row++;
-                HotelBookingSystem.setNav(3, row);
+                int index = Integer.parseInt((String)table.getValueAt(row, 0));
+                HotelBookingSystem.setNav(3, index);
             }
         });
         
@@ -129,16 +147,27 @@ public class Dashboard extends JPanel implements MouseListener {
         model.addColumn("Contact");
         ArrayList<String[]> records = Records.getList();
         
-        // add data into table
-        for (String[] outerArray : records) {
-            String[] recordPlaceholder = new String[6];
-            recordPlaceholder[0] = outerArray[0];
-            recordPlaceholder[1] = outerArray[1];
-            recordPlaceholder[2] = outerArray[2];
-            recordPlaceholder[3] = outerArray[4];
-            recordPlaceholder[4] = outerArray[3];
-            recordPlaceholder[5] = outerArray[6];
-            model.addRow(recordPlaceholder);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
+        
+        try {
+            // add data into table
+            for (String[] outerArray : records) {
+                if (Integer.parseInt(monthFormat.format(format.parse(outerArray[1]))) == selectedMonth) {
+                    String[] recordPlaceholder = new String[6];
+                    recordPlaceholder[0] = outerArray[0];
+                    recordPlaceholder[1] = outerArray[1];
+                    recordPlaceholder[2] = outerArray[2];
+                    recordPlaceholder[3] = outerArray[4];
+                    recordPlaceholder[4] = outerArray[3];
+                    recordPlaceholder[5] = outerArray[6];
+                    model.addRow(recordPlaceholder);
+                }
+            }
+        } catch (Exception error) {
+            JOptionPane.showMessageDialog(null, "Unable to display selected month records", "System Notification", JOptionPane.PLAIN_MESSAGE);
+            System.out.println("Unable to display selected month records");
+            System.out.println("Error code: " + error);
         }
         
         table.setModel(model);
@@ -172,7 +201,19 @@ public class Dashboard extends JPanel implements MouseListener {
     
     @Override
     public void mouseReleased(MouseEvent e) {
-        
+        if (e.getSource() == prevBtn && selectedMonth != 1) {
+            selectedMonth -= 1;
+            month.setText(months[selectedMonth - 1]);
+            refreshTable();
+            this.revalidate();
+            this.repaint();
+        } else if (e.getSource() == nextBtn && selectedMonth != 12) {
+            selectedMonth += 1;
+            month.setText(months[selectedMonth - 1]);
+            refreshTable();
+            this.revalidate();
+            this.repaint();
+        }
     }
     
     @Override

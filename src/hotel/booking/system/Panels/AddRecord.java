@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.text.*;
 import javax.swing.border.EmptyBorder;
 
 public class AddRecord extends JPanel implements MouseListener {
@@ -299,20 +300,30 @@ public class AddRecord extends JPanel implements MouseListener {
     public void searchRoom() {
         Date startDate = (Date) startdateSpinner.getValue();
         Date endDate = (Date) endDateSpinner.getValue();
-        String availableRooms[] = Records.searchRooms(startDate,  endDate);
-        for (String room : availableRooms) {
-            int index = 0;
-            for (JRadioButton radioBtn : radioBtns) {
-                if (room.equalsIgnoreCase(radioBtn.getText())) {
-                    System.out.println(room);
-                    radioBtns[index].setEnabled(true);
+        
+        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
+        String startDateYear = yearFormat.format(startDate);
+        String endDateYear = yearFormat.format(endDate);
+        
+        if (startDate.after(endDate) || endDate.before(startDate) || startDate.equals(endDate)) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid date", "System Notification", JOptionPane.PLAIN_MESSAGE);
+        } else if (!startDateYear.equals("2021") || !endDateYear.equals("2021")) {
+            JOptionPane.showMessageDialog(null, "Record outside of year 2021 is not available", "System Notification", JOptionPane.PLAIN_MESSAGE);
+        } else {
+            String availableRooms[] = Records.searchRooms(startDate,  endDate);
+            for (String room : availableRooms) {
+                int index = 0;
+                for (JRadioButton radioBtn : radioBtns) {
+                    if (room.equalsIgnoreCase(radioBtn.getText())) {
+                        radioBtns[index].setEnabled(true);
+                    }
+                    index++;
                 }
-                index++;
             }
+            startdateSpinner.setEnabled(false);
+            endDateSpinner.setEnabled(false);
+            searchBtn.setEnabled(false);
         }
-        startdateSpinner.setEnabled(false);
-        endDateSpinner.setEnabled(false);
-        searchBtn.setEnabled(false);
     }
     
     public void addRecord() {
