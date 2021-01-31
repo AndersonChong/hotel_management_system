@@ -38,12 +38,9 @@ public class Login extends JPanel implements MouseListener {
         
         emailFieldPanel.add(email);
         emailFieldPanel.add(emailTF);
-//        emailFieldPanel.setBackground(MyFonts.getSecondaryColor());
         passFieldPanel.add(pass);
         passFieldPanel.add(passTF);
-//        passFieldPanel.setBackground(MyFonts.getSecondaryColor());
         btnFieldPanel.add(loginBtnContainer);
-//        btnFieldPanel.setBackground(MyFonts.getSecondaryColor());
         
         setLayout(new GridLayout(3, 1));
         setBounds(260, 215, 315, 130);
@@ -76,6 +73,8 @@ public class Login extends JPanel implements MouseListener {
         if (e.getSource() == loginBtn) {
             if (emailTF.getText().isEmpty() || passTF.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Please filled all required fields", "System Notification", JOptionPane.PLAIN_MESSAGE);
+            } else if (!emailTF.getText().contains("@") || !emailTF.getText().contains(".")) {
+                JOptionPane.showMessageDialog(null, "Please enter a valid email address", "System Notification", JOptionPane.PLAIN_MESSAGE);
             } else  {
                 Users.login(emailTF.getText(), passTF.getText());
             }

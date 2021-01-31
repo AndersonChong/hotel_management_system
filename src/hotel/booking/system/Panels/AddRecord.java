@@ -301,9 +301,21 @@ public class AddRecord extends JPanel implements MouseListener {
         Date startDate = (Date) startdateSpinner.getValue();
         Date endDate = (Date) endDateSpinner.getValue();
         
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        try {
+            startDate = format.parse(format.format(startDate));
+            endDate = format.parse(format.format(endDate));
+        } catch (Exception e) {
+            System.out.println("Unable to parse date");
+        }
+        
+        
         SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
         String startDateYear = yearFormat.format(startDate);
         String endDateYear = yearFormat.format(endDate);
+        
+        System.out.println(startDate);
+        System.out.println(endDate);
         
         if (startDate.after(endDate) || endDate.before(startDate) || startDate.equals(endDate)) {
             JOptionPane.showMessageDialog(null, "Please enter a valid date", "System Notification", JOptionPane.PLAIN_MESSAGE);
@@ -313,6 +325,7 @@ public class AddRecord extends JPanel implements MouseListener {
             String availableRooms[] = Records.searchRooms(startDate,  endDate);
             for (String room : availableRooms) {
                 int index = 0;
+//                System.out.println(room);
                 for (JRadioButton radioBtn : radioBtns) {
                     if (room.equalsIgnoreCase(radioBtn.getText())) {
                         radioBtns[index].setEnabled(true);
@@ -329,6 +342,8 @@ public class AddRecord extends JPanel implements MouseListener {
     public void addRecord() {
         if (nameTF.getText().isEmpty() || ICPassTF.getText().isEmpty() || contactTF.getText().isEmpty() || emailTF.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please filled all required fields", "System Notification", JOptionPane.PLAIN_MESSAGE);
+        } else if (!emailTF.getText().contains("@") || !emailTF.getText().contains(".")) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid email address", "System Notification", JOptionPane.PLAIN_MESSAGE);
         } else {
             String selectedRoom = "Invalid";
             for (int i = 0; i < 20; i++) {

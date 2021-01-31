@@ -129,4 +129,71 @@ public class Receipts {
             System.out.println("Error code: " + error);
         }
     }
+    
+    // update properties of selected receipt
+    public static void update(int index, Date startDate, Date endDate, String roomNum, String name, String ICPass) {
+        File file = new File("src/hotel/booking/system/Files/receipt.txt");
+        
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        String startDateStr = dateFormat.format(startDate);
+        String endDateStr = dateFormat.format(endDate);
+        
+        long diffInDays = Receipts.getDateDiff(startDateStr, endDateStr);
+        long total = Receipts.calTotal(diffInDays);
+        
+        try {
+            FileWriter writer = new FileWriter("src/hotel/booking/system/Files/temp.txt", true);
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                String recordString = scanner.nextLine();
+                String recordProperties[] = recordString.split(", ");
+                
+                if (Integer.parseInt(recordProperties[0]) == index) {
+                    writer.write(index + ", " + startDateStr + ", " + endDateStr + ", " + roomNum + ", " + name + ", " + ICPass + ", " + diffInDays * 350 + ", " + total + "\n");
+                } else {
+                    writer.write(recordString + "\n");
+                }
+            }
+            writer.close();
+            
+            file.delete();
+            File temp = new File("src/hotel/booking/system/Files/temp.txt");
+            temp.renameTo(new File("src/hotel/booking/system/Files/receipt.txt"));
+        } catch (Exception error) {
+            JOptionPane.showMessageDialog(null, "Unable to update receipt", "System Notification", JOptionPane.PLAIN_MESSAGE);
+            System.out.println("Unable to update record");
+            System.out.println("Error code: " + error);
+        }
+        
+    }
+    
+    // method to delete receipt based on selected index
+    public static void delete(int index) {
+        File file = new File("src/hotel/booking/system/Files/receipt.txt");
+        
+        try {
+            FileWriter writer = new FileWriter("src/hotel/booking/system/Files/temp.txt");
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                String recordString = scanner.nextLine();
+                String recordProperties[] = recordString.split(", ");
+                
+                if (Integer.parseInt(recordProperties[0]) == index) {
+                    // ignore record if the index is identical
+                } else {
+                    // write record into temparary file if index is not identical
+                    writer.write(recordString + "\n");
+                }
+            }
+            writer.close();
+            
+            file.delete();
+            File temp = new File("src/hotel/booking/system/Files/temp.txt");
+            temp.renameTo(new File("src/hotel/booking/system/Files/receipt.txt"));
+        } catch (Exception error) {
+            JOptionPane.showMessageDialog(null, "Unable to delete receipt", "System Notification", JOptionPane.PLAIN_MESSAGE);
+            System.out.println("Unable to update record");
+            System.out.println("Error code: " + error);
+        }
+    }
 }

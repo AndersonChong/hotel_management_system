@@ -51,7 +51,6 @@ public class EditRecord extends JPanel implements MouseListener {
     // constructor used to initialize text fields value based on specific record
     public EditRecord(int index) {
         this.index = index;
-        System.out.println(index);
         
         for (int i = 0; i < 20; i++) {
             radioBtns[i] = new JRadioButton();
@@ -407,6 +406,7 @@ public class EditRecord extends JPanel implements MouseListener {
             int result = JOptionPane.showConfirmDialog(null, "Confirm delete selected record?", "System Notification", JOptionPane.YES_NO_OPTION);
             if (result == JOptionPane.YES_OPTION) {
                 Records.delete(index);
+                Receipts.delete(index);
                 HotelBookingSystem.setNav(0, 0);
             }
         } else if (e.getSource() == cancelBtn) {
@@ -436,7 +436,6 @@ public class EditRecord extends JPanel implements MouseListener {
             int index = 0;
             for (JRadioButton radioBtn : radioBtns) {
                 if (room.equalsIgnoreCase(radioBtn.getText())) {
-                    System.out.println(room);
                     radioBtns[index].setEnabled(true);
                 }
                 index++;
@@ -450,6 +449,8 @@ public class EditRecord extends JPanel implements MouseListener {
     public void updateRecord() {
         if (nameTF.getText().isEmpty() || ICPassTF.getText().isEmpty() || contactTF.getText().isEmpty() || emailTF.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Please filled all required fields", "System Notification", JOptionPane.PLAIN_MESSAGE);
+        } else if (!emailTF.getText().contains("@") || !emailTF.getText().contains(".")) {
+            JOptionPane.showMessageDialog(null, "Please enter a valid email address", "System Notification", JOptionPane.PLAIN_MESSAGE);
         } else {
             String selectedRoom = "Invalid";
             for (int i = 0; i < 20; i++) {
@@ -459,6 +460,7 @@ public class EditRecord extends JPanel implements MouseListener {
             }
             try {
                 Records.update(index, (Date) startdateSpinner.getValue(), (Date) endDateSpinner.getValue(), selectedRoom, nameTF.getText(), ICPassTF.getText(), contactTF.getText(), emailTF.getText());
+                Receipts.update(index, (Date) startdateSpinner.getValue(), (Date) endDateSpinner.getValue(), selectedRoom, nameTF.getText(), ICPassTF.getText());
                 for (int i = 0; i < 20; i++) {
                     radioBtns[i].setEnabled(false);
                 }

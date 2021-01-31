@@ -13,7 +13,6 @@ public class Users {
             boolean isCorrect = false;
             while (scanner.hasNextLine()) {
                 String userString = scanner.nextLine();
-                System.out.println(userString);
                 String userProperties[] = userString.split(", ");
                 if (userProperties[2].equals(email) && userProperties[3].equals(pass)) {
                     String name = userProperties[1].toUpperCase();

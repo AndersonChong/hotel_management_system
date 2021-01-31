@@ -41,16 +41,18 @@ public class ViewReceipt extends JPanel{
         ArrayList<String[]> receipts = Receipts.getList();
         
         // add data into table
-        for (String[] outerArray : receipts) {
-            String[] receiptPlaceholder = new String[7];
-            receiptPlaceholder[0] = outerArray[0];
-            receiptPlaceholder[1] = outerArray[1];
-            receiptPlaceholder[2] = outerArray[2];
-            receiptPlaceholder[3] = outerArray[4];
-            receiptPlaceholder[4] = outerArray[3];
-            receiptPlaceholder[5] = outerArray[6];
-            receiptPlaceholder[6] = outerArray[7];
-            model.addRow(receiptPlaceholder);
+        if (receipts.size() != 0) {
+            for (String[] outerArray : receipts) {
+                String[] receiptPlaceholder = new String[7];
+                receiptPlaceholder[0] = outerArray[0];
+                receiptPlaceholder[1] = outerArray[1];
+                receiptPlaceholder[2] = outerArray[2];
+                receiptPlaceholder[3] = outerArray[4];
+                receiptPlaceholder[4] = outerArray[3];
+                receiptPlaceholder[5] = outerArray[6];
+                receiptPlaceholder[6] = outerArray[7];
+                model.addRow(receiptPlaceholder);
+            }
         }
         
         // create a table with the predefine model

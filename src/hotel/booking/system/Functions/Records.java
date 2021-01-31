@@ -41,9 +41,7 @@ public class Records {
                 writer.close();
                 
                 long diffInDays = Receipts.getDateDiff(startDateStr, endDateStr);
-                System.out.println(diffInDays);
                 long total = Receipts.calTotal(diffInDays);
-                System.out.println(total);
                 
                 new Receipts(startDateStr, endDateStr, roomNum, name, ICPass, diffInDays * 350, total);
                 
@@ -55,8 +53,6 @@ public class Records {
             }
             
         }
-        
-        System.out.println("Record created");
     }
     
     // static method to get current date
@@ -190,8 +186,8 @@ public class Records {
     }
     
     public static String[] searchRooms(Date startDate, Date endDate) {
-        String roomList[] = Rooms.getList();
-        String returnRoomList[] = Rooms.getList();
+        String roomList[] = Rooms.getList().clone();
+        String returnRoomList[] = Rooms.getList().clone();
         for (String record[] : getList()) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
             Date fileStartDate;
@@ -205,8 +201,9 @@ public class Records {
                 JOptionPane.showMessageDialog(null, "Unable to parse data string", "System Notification", JOptionPane.PLAIN_MESSAGE);
                 return null;
             }
-            if ((fileStartDate.compareTo(startDate) >= 0 && fileStartDate.compareTo(endDate) <= 0) || (fileEndDate.compareTo(startDate) >= 0 && fileStartDate.compareTo(endDate) <= 0)) {
-                System.out.println("within range loop");
+            if (!fileStartDate.before(startDate) && !fileStartDate.after(endDate) || 
+                    !fileEndDate.before(startDate) && !fileEndDate.after(endDate) ||
+                        !fileStartDate.after(startDate) && !fileEndDate.before(endDate)) {
                 int index = 0;
                 for (String room : roomList) {
                     if (room.equalsIgnoreCase(record[3])) {
@@ -216,16 +213,16 @@ public class Records {
                     }
                     index++;
                 }
-                roomList = returnRoomList;
+                roomList = returnRoomList.clone();
             }
         }
+        
         return returnRoomList;
     }
     
     public static void searchRecords(String input) {
         ArrayList<String[]> searchList = new ArrayList<String[]>();
         if (!input.isEmpty()) {
-            System.out.println(input);
             File file = new File("src/hotel/booking/system/Files/record.txt");
                     
             try {

@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import hotel.booking.system.HotelBookingSystem;
 import java.text.DateFormat;
 import java.io.*;
+import java.awt.print.*;
 import java.text.SimpleDateFormat;
 
 public class PrintReceipt extends JPanel implements MouseListener {
@@ -35,10 +36,12 @@ public class PrintReceipt extends JPanel implements MouseListener {
     JTextField totalTF = new JTextField("", 16);
     
     // initialize buttons
-    JButton printBtn = new JButton("Download");
+    JButton downloadBtn = new JButton("Download");
+    JButton printBtn = new JButton("Print");
     JButton cancelBtn = new JButton("Cancel");
     
     // initialize containers used for custom buttons decoration
+    JPanel downloadBtnContainer = new JPanel();
     JPanel printBtnContainer = new JPanel();
     JPanel cancelBtnContainer = new JPanel();
     
@@ -183,10 +186,19 @@ public class PrintReceipt extends JPanel implements MouseListener {
                     panels[i].setLayout(new FlowLayout(FlowLayout.LEADING, 0, 5));
                     
                     // decoration for save button
+                    downloadBtn.setBorderPainted(false);
+                    downloadBtn.setForeground(MyFonts.getQuaternaryColor());
+                    downloadBtn.addMouseListener(this);
+                    // container to create custom decoration for search button
+                    downloadBtnContainer.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
+                    downloadBtnContainer.add(downloadBtn);
+                    downloadBtnContainer.setBackground(MyFonts.getPrimaryColor());
+                    
+                    // decoration for print button
                     printBtn.setBorderPainted(false);
                     printBtn.setForeground(MyFonts.getQuaternaryColor());
                     printBtn.addMouseListener(this);
-                    // container to create custom decoration for search button
+                    // container to create custom decoration for print button
                     printBtnContainer.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
                     printBtnContainer.add(printBtn);
                     printBtnContainer.setBackground(MyFonts.getPrimaryColor());
@@ -200,13 +212,20 @@ public class PrintReceipt extends JPanel implements MouseListener {
                     cancelBtnContainer.add(cancelBtn);
                     cancelBtnContainer.setBackground(MyFonts.getPrimaryColor());
                     
+                    // container that act as a left margin for print button
+                    JPanel printMarginContainer = new JPanel();
+                    printMarginContainer.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
+                    printMarginContainer.add(printBtnContainer);
+                    printMarginContainer.setBorder(new EmptyBorder(0, 30, 0, 0));
+                    
                     // container that act as a left margin for cancel button
                     JPanel cancelMarginContainer = new JPanel();
                     cancelMarginContainer.setLayout(new FlowLayout(FlowLayout.LEADING, 0, 0));
                     cancelMarginContainer.add(cancelBtnContainer);
                     cancelMarginContainer.setBorder(new EmptyBorder(0, 30, 0, 0));
                     
-                    panels[i].add(printBtnContainer);
+                    panels[i].add(downloadBtnContainer);
+                    panels[i].add(printMarginContainer);
                     panels[i].add(cancelMarginContainer);
             }
         }
@@ -225,7 +244,9 @@ public class PrintReceipt extends JPanel implements MouseListener {
     
     @Override
     public void mouseEntered(MouseEvent e) {
-        if (e.getSource() == printBtn) {
+        if (e.getSource() == downloadBtn) {
+            downloadBtnContainer.setBackground(MyFonts.getSecondaryHoverColor());
+        } else if (e.getSource() == printBtn) {
             printBtnContainer.setBackground(MyFonts.getSecondaryHoverColor());
         } else if (e.getSource() == cancelBtn) {
             cancelBtnContainer.setBackground(MyFonts.getSecondaryHoverColor());
@@ -234,7 +255,9 @@ public class PrintReceipt extends JPanel implements MouseListener {
     
     @Override
     public void mouseExited(MouseEvent e) {
-        if (e.getSource() == printBtn) {
+        if (e.getSource() == downloadBtn) {
+            downloadBtnContainer.setBackground(MyFonts.getPrimaryColor());
+        } else if (e.getSource() == printBtn) {
             printBtnContainer.setBackground(MyFonts.getPrimaryColor());
         } else if (e.getSource() == cancelBtn) {
             cancelBtnContainer.setBackground(MyFonts.getPrimaryColor());
@@ -248,8 +271,29 @@ public class PrintReceipt extends JPanel implements MouseListener {
     
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (e.getSource() == printBtn) {
+        if (e.getSource() == downloadBtn) {
             Receipts.download(index, this.startDateStr, this.endDateStr, roomNumTF.getText(), nameTF.getText(), ICPassTF.getText(), Integer.parseInt(sumTF.getText()), Integer.parseInt(totalTF.getText()));
+        } else if (e.getSource() == printBtn) {
+            try {
+                String printInfo = "RECEIPT ID N0. " + index + 
+                        "\n\nStart Date: " + this.startDateStr + 
+                        "\nEnd Date: " + this.endDateStr + "\nRoom Number: " + 
+                        roomNumTF.getText() + "\nName: " + nameTF.getText() + 
+                        "\nIC/ Passport: " + ICPassTF.getText() + "\nSum: " + 
+                        Integer.parseInt(sumTF.getText()) + "\nTotal: " + 
+                        Integer.parseInt(totalTF.getText()) + 
+                        "\n\nThank you\nHope to enjoyed your vacation";
+                JTextArea textArea = new JTextArea();
+                textArea.setLineWrap(true);
+                textArea.append(printInfo);
+                System.out.println(printInfo);
+                textArea.print();
+            } catch (Exception error) {
+                JOptionPane.showMessageDialog(null, "Unable to print receipt", "System Notification", JOptionPane.PLAIN_MESSAGE);
+                System.out.println("Unable to print record");
+                System.out.println("Error code: " + error);
+            }
+            
         } else if (e.getSource() == cancelBtn) {
             HotelBookingSystem.setNav(2, 0);
         }

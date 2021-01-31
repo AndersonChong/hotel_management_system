@@ -94,16 +94,18 @@ public class Dashboard extends JPanel implements MouseListener {
         
         try {
             // add data into table
-            for (String[] outerArray : records) {
-                if (Integer.parseInt(monthFormat.format(format.parse(outerArray[1]))) == selectedMonth) {
-                    String[] recordPlaceholder = new String[6];
-                    recordPlaceholder[0] = outerArray[0];
-                    recordPlaceholder[1] = outerArray[1];
-                    recordPlaceholder[2] = outerArray[2];
-                    recordPlaceholder[3] = outerArray[4];
-                    recordPlaceholder[4] = outerArray[3];
-                    recordPlaceholder[5] = outerArray[6];
-                    model.addRow(recordPlaceholder);
+            if (records.size() != 0) {
+                for (String[] outerArray : records) {
+                    if (Integer.parseInt(monthFormat.format(format.parse(outerArray[1]))) == selectedMonth) {
+                        String[] recordPlaceholder = new String[6];
+                        recordPlaceholder[0] = outerArray[0];
+                        recordPlaceholder[1] = outerArray[1];
+                        recordPlaceholder[2] = outerArray[2];
+                        recordPlaceholder[3] = outerArray[4];
+                        recordPlaceholder[4] = outerArray[3];
+                        recordPlaceholder[5] = outerArray[6];
+                        model.addRow(recordPlaceholder);
+                    } 
                 }
             }
         } catch (Exception error) {
@@ -152,16 +154,18 @@ public class Dashboard extends JPanel implements MouseListener {
         
         try {
             // add data into table
-            for (String[] outerArray : records) {
-                if (Integer.parseInt(monthFormat.format(format.parse(outerArray[1]))) == selectedMonth) {
-                    String[] recordPlaceholder = new String[6];
-                    recordPlaceholder[0] = outerArray[0];
-                    recordPlaceholder[1] = outerArray[1];
-                    recordPlaceholder[2] = outerArray[2];
-                    recordPlaceholder[3] = outerArray[4];
-                    recordPlaceholder[4] = outerArray[3];
-                    recordPlaceholder[5] = outerArray[6];
-                    model.addRow(recordPlaceholder);
+            if (records.size() != 0) {
+                for (String[] outerArray : records) {
+                    if (Integer.parseInt(monthFormat.format(format.parse(outerArray[1]))) == selectedMonth) {
+                        String[] recordPlaceholder = new String[6];
+                        recordPlaceholder[0] = outerArray[0];
+                        recordPlaceholder[1] = outerArray[1];
+                        recordPlaceholder[2] = outerArray[2];
+                        recordPlaceholder[3] = outerArray[4];
+                        recordPlaceholder[4] = outerArray[3];
+                        recordPlaceholder[5] = outerArray[6];
+                        model.addRow(recordPlaceholder);
+                    } 
                 }
             }
         } catch (Exception error) {
